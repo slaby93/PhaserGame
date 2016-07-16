@@ -10211,6 +10211,9 @@
 	    _Game.game.load.image('firstAid', './src/resources/assets/firstaid.png');
 	    _Game.game.load.image('arrow', './src/resources/assets/arrow.png');
 	    _Game.game.load.image('background', './src/resources/assets/background.jpg');
+
+	    _Game.game.load.audio('blink', './src/resources/sounds/blink.wav');
+	    _Game.game.load.audio('ooYeah', './src/resources/sounds/ooYeah.mp3');
 	}
 	function create() {
 	    "use strict";
@@ -10221,6 +10224,7 @@
 	    var animal = animals.create(_Game.game.world.width / 2, _Game.game.world.height / 2, 'star');
 	    animal.anchor.setTo(0.5);
 	    animal.scale.setTo(3);
+	    animal.inputEnabled = true;
 	    currentSprite = animal;
 	    animal = animals.create(-1000, _Game.game.world.height / 2, 'diamond');
 	    animal.anchor.setTo(0.5);
@@ -10270,6 +10274,8 @@
 	    currentSpriteTween.start();
 	    nextSpriteTween.start();
 	    currentSprite = nextSprite;
+	    console.log(arrow.customParams);
+	    arrow.customParams.sound.play();
 	}
 
 	function setUpArrows() {
@@ -10281,13 +10287,15 @@
 	    arrow.scale.x = -3;
 	    arrow.scale.y = 3;
 	    arrow.customParams = {
-	        direction: 'left'
+	        direction: 'left',
+	        sound: _Game.game.add.audio('blink')
 	    };
 	    arrow = arrows.create(_Game.game.world.width - 50, _Game.game.world.height / 2, 'arrow');
 	    arrow.anchor.setTo(0.5);
 	    arrow.scale.setTo(3);
 	    arrow.customParams = {
-	        direction: 'right'
+	        direction: 'right',
+	        sound: _Game.game.add.audio('blink')
 	    };
 	    arrows.forEach(function (child) {
 	        child.inputEnabled = true;

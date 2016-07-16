@@ -8,6 +8,9 @@ function preload() {
     game.load.image('firstAid', './src/resources/assets/firstaid.png');
     game.load.image('arrow', './src/resources/assets/arrow.png');
     game.load.image('background', './src/resources/assets/background.jpg');
+
+    game.load.audio('blink', './src/resources/sounds/blink.wav');
+    game.load.audio('ooYeah', './src/resources/sounds/ooYeah.mp3');
 }
 function create() {
     "use strict";
@@ -17,6 +20,7 @@ function create() {
     let animal = animals.create(game.world.width / 2, game.world.height / 2, 'star');
     animal.anchor.setTo(0.5);
     animal.scale.setTo(3);
+    animal.inputEnabled = true;
     currentSprite = animal;
     animal = animals.create(-1000, game.world.height / 2, 'diamond');
     animal.anchor.setTo(0.5);
@@ -24,6 +28,7 @@ function create() {
     animal = animals.create(-1000, game.world.height / 2, 'firstAid');
     animal.anchor.setTo(0.5);
     animal.scale.setTo(3);
+
 }
 function update() {
     "use strict";
@@ -66,8 +71,8 @@ function handleArrowClick(arrow) {
     currentSpriteTween.start();
     nextSpriteTween.start();
     currentSprite = nextSprite;
-
-
+    console.log(arrow.customParams);
+    arrow.customParams.sound.play();
 }
 
 function setUpArrows() {
@@ -78,17 +83,20 @@ function setUpArrows() {
     arrow.scale.x = -3;
     arrow.scale.y = 3;
     arrow.customParams = {
-        direction: 'left'
+        direction: 'left',
+        sound: game.add.audio('blink')
     };
     arrow = arrows.create(game.world.width - 50, game.world.height / 2, 'arrow');
     arrow.anchor.setTo(0.5);
     arrow.scale.setTo(3);
     arrow.customParams = {
-        direction: 'right'
+        direction: 'right',
+        sound: game.add.audio('blink')
     };
     arrows.forEach((child) => {
         child.inputEnabled = true;
         child.input.pixelPerfectClick = true;
         child.events.onInputDown.add(handleArrowClick);
     });
+
 }
