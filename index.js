@@ -46,115 +46,53 @@
 
 	'use strict';
 
-	var _Phaser = __webpack_require__(1);
+	var _Game = __webpack_require__(1);
 
-	var _Phaser2 = _interopRequireDefault(_Phaser);
-
-	var _jquery = __webpack_require__(2);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
+	var _Game2 = _interopRequireDefault(_Game);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	console.table(["apples", "oranges", "bananas"]);
-	var platforms = void 0,
-	    cursors = void 0,
-	    player = void 0,
-	    stars = void 0,
-	    score = 0,
-	    scoreText = void 0;
-	var game = new _Phaser2.default.Game(800, 600, _Phaser2.default.AUTO, (0, _jquery2.default)('#game'), {
-	    preload: preload,
-	    create: create,
-	    update: update,
-	    render: render
-	});
-
-	function preload() {
-	    "use strict";
-
-	    game.load.image('platfrom', './src/resources/assets/platform.png');
-	    game.load.image('diamond', './src/resources/assets/diamond.png');
-	    game.load.image('firstAid', './src/resources/assets/firstAid.png');
-	    game.load.image('sky', './src/resources/assets/sky.png');
-	    game.load.image('star', './src/resources/assets/star.png');
-	    game.load.spritesheet('dude', './src/resources/assets/dude.png', 32, 48);
-	}
-	function create() {
-	    "use strict";
-
-	    game.physics.startSystem(_Phaser2.default.Physics.ARCADE);
-	    game.add.sprite(0, 0, 'sky');
-	    platforms = game.add.group();
-	    platforms.enableBody = true;
-	    var ground = platforms.create(0, game.world.height - 64, 'platfrom');
-	    ground.scale.setTo(2, 2);
-	    ground.body.immovable = true;
-	    var ledges = platforms.create(game.world.width - 202, game.world.centerY, 'platfrom');
-	    ledges.scale.setTo(0.5, 1);
-	    ledges.body.immovable = true;
-
-	    ledges = platforms.create(0, game.world.centerY + 64, 'platfrom');
-	    ledges.scale.setTo(0.5, 1);
-	    ledges.body.immovable = true;
-	    // ADD PLAYER
-	    player = game.add.sprite(32, game.world.height - 150, 'dude');
-	    game.physics.arcade.enable(player);
-	    player.body.gravity.y = 300;
-	    player.body.collideWorldBounds = true;
-
-	    cursors = game.input.keyboard.createCursorKeys();
-
-	    //  Our two animations, walking left and right.
-	    player.animations.add('left', [0, 1, 2, 3], 10, true);
-	    player.animations.add('right', [5, 6, 7, 8], 10, true);
-
-	    stars = game.add.group();
-	    stars.enableBody = true;
-	    for (var i = 0; i < 12; i++) {
-	        var star = stars.create(70 * i, 64, 'star');
-	        star.body.gravity.y = 100;
-	        star.body.bounce.y = 0.5;
-	    }
-
-	    scoreText = game.add.text(30, 30, score, { 'font-size': 15, 'background-color': 'red' });
-	}
-	function update() {
-	    "use strict";
-
-	    game.physics.arcade.overlap(player, stars, function (dude, star) {
-	        score += 1;
-	        star.kill();
-	    }, null, this);
-	    game.physics.arcade.collide(player, platforms);
-	    game.physics.arcade.collide(player, stars);
-	    game.physics.arcade.collide(platforms, stars);
-	    scoreText.text = score;
-	    computeMovement();
-	}
-	function render() {}
-
-	function computeMovement() {
-	    player.body.velocity.x = 0;
-
-	    if (cursors.left.isDown) {
-	        player.body.velocity.x = -200;
-	        player.animations.play('left');
-	    } else if (cursors.right.isDown) {
-	        player.body.velocity.x = 150;
-	        player.animations.play('right');
-	    } else {
-	        player.animations.stop();
-	        player.frame = 4;
-	    }
-
-	    if (cursors.up.isDown && player.body.touching.down) {
-	        player.body.velocity.y = -350;
-	    }
-	}
+	(0, _Game2.default)();
 
 /***/ },
 /* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.game = undefined;
+
+	var _Phaser = __webpack_require__(2);
+
+	var _Phaser2 = _interopRequireDefault(_Phaser);
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _stateA = __webpack_require__(4);
+
+	var _stateA2 = _interopRequireDefault(_stateA);
+
+	var _stateB = __webpack_require__(5);
+
+	var _stateB2 = _interopRequireDefault(_stateB);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var game = exports.game = void 0;
+
+	exports.default = function () {
+	    exports.game = game = new _Phaser2.default.Game(800, 400, _Phaser2.default.AUTO);
+	    game.state.add('moveToPointer', _stateA2.default);
+	    game.state.start('moveToPointer');
+	};
+
+/***/ },
+/* 2 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -165,7 +103,7 @@
 	exports.default = window.Phaser;
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*eslint-disable no-unused-vars*/
@@ -10243,6 +10181,152 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _Game = __webpack_require__(1);
+
+	var _Phaser = __webpack_require__(2);
+
+	var _Phaser2 = _interopRequireDefault(_Phaser);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var arrows = void 0,
+	    animals = void 0,
+	    currentSprite = void 0;
+	function preload() {
+	    "use strict";
+
+	    _Game.game.load.image('star', './src/resources/assets/star.png');
+	    _Game.game.load.image('diamond', './src/resources/assets/diamond.png');
+	    _Game.game.load.image('firstAid', './src/resources/assets/firstaid.png');
+	    _Game.game.load.image('arrow', './src/resources/assets/arrow.png');
+	    _Game.game.load.image('background', './src/resources/assets/background.jpg');
+	}
+	function create() {
+	    "use strict";
+
+	    _Game.game.add.image(0, 0, 'background');
+	    setUpArrows();
+	    animals = _Game.game.add.group();
+	    var animal = animals.create(_Game.game.world.width / 2, _Game.game.world.height / 2, 'star');
+	    animal.anchor.setTo(0.5);
+	    animal.scale.setTo(3);
+	    currentSprite = animal;
+	    animal = animals.create(-1000, _Game.game.world.height / 2, 'diamond');
+	    animal.anchor.setTo(0.5);
+	    animal.scale.setTo(3);
+	    animal = animals.create(-1000, _Game.game.world.height / 2, 'firstAid');
+	    animal.anchor.setTo(0.5);
+	    animal.scale.setTo(3);
+	}
+	function update() {
+	    "use strict";
+
+	    computeMovement();
+	}
+	function render() {}
+
+	function computeMovement() {}
+	exports.default = {
+	    preload: preload,
+	    create: create,
+	    update: update,
+	    render: render
+	};
+
+
+	function handleArrowClick(arrow) {
+	    var nextSprite = void 0,
+	        nextSpriteTween = void 0,
+	        currentSpriteTween = void 0,
+	        tweenDuration = 600;
+	    currentSpriteTween = _Game.game.add.tween(currentSprite);
+
+	    if (arrow.customParams.direction === 'left') {
+	        // LEFT
+	        nextSprite = animals.previous();
+	        nextSprite.x = -1000;
+	        currentSpriteTween.to({ x: 1000 }, tweenDuration);
+	    } else {
+	        // RIGHT
+	        nextSprite = animals.next();
+	        nextSprite.x = 1000;
+	        currentSpriteTween.to({ x: -1000 }, tweenDuration);
+	    }
+	    nextSpriteTween = _Game.game.add.tween(nextSprite);
+	    nextSpriteTween.to({
+	        x: _Game.game.world.centerX
+	    }, tweenDuration);
+	    currentSpriteTween.start();
+	    nextSpriteTween.start();
+	    currentSprite = nextSprite;
+	}
+
+	function setUpArrows() {
+	    "use strict";
+
+	    arrows = _Game.game.add.group();
+	    var arrow = arrows.create(50, _Game.game.world.height / 2, 'arrow');
+	    arrow.anchor.setTo(0.5);
+	    arrow.scale.x = -3;
+	    arrow.scale.y = 3;
+	    arrow.customParams = {
+	        direction: 'left'
+	    };
+	    arrow = arrows.create(_Game.game.world.width - 50, _Game.game.world.height / 2, 'arrow');
+	    arrow.anchor.setTo(0.5);
+	    arrow.scale.setTo(3);
+	    arrow.customParams = {
+	        direction: 'right'
+	    };
+	    arrows.forEach(function (child) {
+	        child.inputEnabled = true;
+	        child.input.pixelPerfectClick = true;
+	        child.events.onInputDown.add(handleArrowClick);
+	    });
+	}
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _Game = __webpack_require__(1);
+
+	function preload() {
+	    "use strict";
+
+	    _Game.game.load.spritesheet('dude', './src/resources/assets/dude.png', 32, 48);
+	}
+	function create() {
+	    "use strict";
+
+	    console.log("STATE B");
+	    console.log(_Game.game.cache.getKeys());
+	}
+	function update() {}
+	function render() {}
+	exports.default = {
+	    preload: preload,
+	    create: create,
+	    update: update,
+	    render: render
+	};
 
 /***/ }
 /******/ ]);
