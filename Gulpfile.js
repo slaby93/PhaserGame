@@ -4,7 +4,7 @@ const webpack = require('gulp-webpack');
 const babel = require('gulp-babel');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 gulp.task('webserver', function () {
-    gulp.src('./dist')
+    gulp.src('./')
         .pipe(webserver({
             livereload: true,
             open: true
@@ -18,9 +18,9 @@ gulp.task('default', function () {
 
 gulp.task('webpack', function () {
     "use strict";
-    gulp.src('./src')
+    gulp.src('./src/js/index.js')
         .pipe(webpack({
-            entry: './src',
+            entry: './src/js',
             output: {
                 filename: 'index.js'
             },
@@ -42,5 +42,5 @@ gulp.task('webpack', function () {
                 })
             ]
         }))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./'));
 });
